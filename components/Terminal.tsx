@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 type LogLevel = "SYNC" | "CALC" | "SUCCESS" | "WARN";
 
@@ -14,7 +14,7 @@ interface TerminalLog extends LogTemplate {
   timestamp: string;
 }
 
-const LOG_TEMPLATES: LogTemplate[] = [
+const LOG_TEMPLATES: readonly LogTemplate[] = [
   { level: "SYNC", message: "Fetching Bags.fm Liquidity Pools..." },
   { level: "SYNC", message: "Indexing creator wallet velocity across token epochs..." },
   { level: "CALC", message: "Running Claude-3.5 Inference on Creator History..." },
@@ -34,8 +34,8 @@ function createTimestamp(): string {
   }).format(new Date());
 }
 
-function createInitialLogs(templates: LogTemplate[]): TerminalLog[] {
-  return templates.slice(0, 5).map((template, index) => ({
+function createInitialLogs(): TerminalLog[] {
+  return LOG_TEMPLATES.slice(0, 5).map((template, index) => ({
     ...template,
     id: index,
     timestamp: "00:00:00"
@@ -43,17 +43,17 @@ function createInitialLogs(templates: LogTemplate[]): TerminalLog[] {
 }
 
 export default function Terminal() {
-  const templates = useMemo<LogTemplate[]>(() => LOG_TEMPLATES, []);
-  const [logs, setLogs] = useState<TerminalLog[]>(() => createInitialLogs(templates));
+  const [logs, setLogs] = useState<TerminalLog[]>(createInitialLogs);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
       setLogs((currentLogs) => {
-        const nextId = currentLogs.length === 0 ? 0 : currentLogs[currentLogs.length - 1].id + 1;
-        const template = templates[nextId % templates.length];
+        const nextId = currentLogs.at(-1)?.id ?? -1;
+        const nextLogId = nextId + 1;
+        const template = LOG_TEMPLATES[nextLogId % LOG_TEMPLATES.length];
         const nextLog: TerminalLog = {
           ...template,
-          id: nextId,
+          id: nextLogId,
           timestamp: createTimestamp()
         };
 
@@ -62,7 +62,7 @@ export default function Terminal() {
     }, 1450);
 
     return () => window.clearInterval(intervalId);
-  }, [templates]);
+  }, []);
 
   return (
     <section className="module-card" aria-label="Forensic terminal">
@@ -71,7 +71,9 @@ export default function Terminal() {
           <p className="module-kicker">Right Column / Live Trace</p>
           <h2 className="module-title">Forensic Terminal</h2>
         </div>
-        <span className="status-pill"><span className="status-dot" />STREAM</span>
+        <span className="status-pill">
+          <span className="status-dot" />STREAM
+        </span>
       </div>
       <div className="terminal-body" role="log" aria-live="polite">
         {logs.map((log) => (
@@ -84,7 +86,9 @@ export default function Terminal() {
         ))}
         <div className="terminal-line">
           <span className="terminal-time">ACTIVE</span>
-          <span>Awaiting next inference cycle<span className="cursor-block" /></span>
+          <span>
+            Awaiting next inference cycle<span className="cursor-block" />
+          </span>
         </div>
       </div>
     </section>
