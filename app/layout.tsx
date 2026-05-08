@@ -1,20 +1,17 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
   title: "BIF Protocol | Bags Intelligence Forge",
-  description: "Industrial strategy-forging dashboard for Bags Intelligence Forge.",
-  applicationName: "BIF Protocol",
-  robots: {
-    index: true,
-    follow: true
-  }
-};
-
-export const viewport: Viewport = {
-  themeColor: "#000000",
-  colorScheme: "dark"
+  description: "Industrial strategy-forging dashboard for Bags intelligence simulation."
 };
 
 interface RootLayoutProps {
@@ -23,7 +20,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={geistMono.variable}>
       <body>{children}</body>
     </html>
   );

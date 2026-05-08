@@ -31,10 +31,7 @@ body {
     #000000;
   background-size: 44px 44px, 44px 44px, auto, auto;
   color: var(--foreground);
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: "Geist Mono", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-family: var(--font-geist-mono), "JetBrains Mono", monospace;
 }
 
 button,

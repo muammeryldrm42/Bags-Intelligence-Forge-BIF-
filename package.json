@@ -2,13 +2,11 @@
   "name": "bags-intelligence-forge-bif",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "lint": "next lint"
   },
   "dependencies": {
     "next": "14.2.5",
@@ -22,9 +20,5 @@
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.5",
     "typescript": "5.5.4"
-  },
-  "engines": {
-    "node": "20.x"
-  },
-  "packageManager": "npm@10.8.2"
+  }
 }
