@@ -38,7 +38,7 @@ function createInitialLogs(templates: LogTemplate[]): TerminalLog[] {
   return templates.slice(0, 5).map((template, index) => ({
     ...template,
     id: index,
-    timestamp: createTimestamp()
+    timestamp: "00:00:00"
   }));
 }
 
